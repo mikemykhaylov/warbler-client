@@ -1,14 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 import { authUser } from '../store/actions/authActions';
+import { removeError } from '../store/actions/errorActions';
 import Homepage from '../components/Homepage';
 import AuthForm from '../components/AuthForm';
 import '../scss/Main.scss';
 
-const Main = ({ user, authUser: authUserMapped, error }) => {
+const Main = ({
+  user,
+  authUser: authUserMapped,
+  removeError: removeErrorMapped,
+  error,
+}) => {
   return (
     <Container className="main__container">
       <Switch>
@@ -16,10 +22,20 @@ const Main = ({ user, authUser: authUserMapped, error }) => {
           <Homepage user={user} />
         </Route>
         <Route path="/signin">
-          <AuthForm onAuth={authUserMapped} action="signin" error={error} />
+          <AuthForm
+            onAuth={authUserMapped}
+            action="signin"
+            error={error}
+            removeError={removeErrorMapped}
+          />
         </Route>
         <Route path="/signup">
-          <AuthForm onAuth={authUserMapped} action="signup" error={error} />
+          <AuthForm
+            onAuth={authUserMapped}
+            action="signup"
+            error={error}
+            removeError={removeErrorMapped}
+          />
         </Route>
       </Switch>
     </Container>
@@ -28,6 +44,7 @@ const Main = ({ user, authUser: authUserMapped, error }) => {
 
 Main.propTypes = {
   authUser: PropTypes.func.isRequired,
+  removeError: PropTypes.func.isRequired,
   user: PropTypes.shape({
     isAuthenticated: PropTypes.bool.isRequired,
     user: PropTypes.shape({
@@ -44,11 +61,12 @@ Main.propTypes = {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  error: state.error
+  error: state.error,
 });
 
 const mapDispatchToProps = {
   authUser,
+  removeError,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

@@ -19,7 +19,6 @@ export function authUser(type, userData) {
       localStorage.setItem('jwtToken', token);
       dispatch(setCurrentUser({ ...user, token }));
       dispatch(removeError());
-      console.log('Logged in');
     }
   };
 }
