@@ -8,7 +8,7 @@ import Homepage from '../components/Homepage';
 import AuthForm from '../components/AuthForm';
 import '../scss/Main.scss';
 
-const Main = ({ user, authUser: authUserMapped }) => {
+const Main = ({ user, authUser: authUserMapped, error }) => {
   return (
     <Container className="main__container">
       <Switch>
@@ -16,10 +16,10 @@ const Main = ({ user, authUser: authUserMapped }) => {
           <Homepage user={user} />
         </Route>
         <Route path="/signin">
-          <AuthForm onAuth={authUserMapped} action="signin" />
+          <AuthForm onAuth={authUserMapped} action="signin" error={error} />
         </Route>
         <Route path="/signup">
-          <AuthForm onAuth={authUserMapped} action="signup" />
+          <AuthForm onAuth={authUserMapped} action="signup" error={error} />
         </Route>
       </Switch>
     </Container>
@@ -37,10 +37,14 @@ Main.propTypes = {
       token: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  error: PropTypes.shape({
+    message: PropTypes.string,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  error: state.error
 });
 
 const mapDispatchToProps = {

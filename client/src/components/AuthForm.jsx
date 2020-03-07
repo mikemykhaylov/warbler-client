@@ -87,7 +87,6 @@ class AuthForm extends Component {
           onChange={this.handleChange}
         />
         {profileImageUrlInput}
-        <Form.Checkbox label="I agree to the Terms and Conditions" />
         <Button primary type="submit">
           {buttonText}
         </Button>
