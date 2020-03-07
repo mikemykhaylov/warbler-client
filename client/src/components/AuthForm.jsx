@@ -1,17 +1,40 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Header } from 'semantic-ui-react';
+import { Button, Form, Header, Message } from 'semantic-ui-react';
+import validateState from '../services/validation';
 
 class AuthForm extends Component {
+  initialState = {
+    username: '',
+    email: '',
+    password: '',
+    profileImageUrl: '',
+    errors: {
+      username: {
+        error: false,
+        message: '',
+      },
+      email: {
+        error: false,
+        message: '',
+      },
+      password: {
+        error: false,
+        message: '',
+      },
+      profileImageUrl: {
+        error: false,
+        message: '',
+      },
+    },
+  };
+
+
+  // TODO Make server-side errors disappear on action change
   constructor(props) {
     super(props);
 
-    this.state = {
-      email: '',
-      username: '',
-      password: '',
-      profileImageUrl: '',
-    };
+    this.state = this.initialState;
   }
 
   handleChange = (e) => {
@@ -24,69 +47,85 @@ class AuthForm extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { action, onAuth } = this.props;
-    await onAuth(action, this.state);
+    const { username, email, password } = this.state;
+    const errorsState = validateState({ username, email, password });
+    if (!errorsState.errorsPresent) {
+      await onAuth(action, this.state);
+      this.setState({ errors: this.initialState.errors });
+    } else {
+      this.setState({ errors: errorsState });
+    }
   };
 
   render() {
-    const { email, username, password, profileImageUrl } = this.state;
-    const { action } = this.props;
-    let headerText;
-    let buttonText;
-    let usernameInput;
-    let profileImageUrlInput;
+    const { email, username, password, profileImageUrl, errors } = this.state;
+    const { action, error } = this.props;
+    let headerText = 'Welcome back!';
+    let buttonText = 'Log In';
+    let usernameInput = null;
+    let profileImageUrlInput = null;
+    let errorMessage = null;
     if (action === 'signup') {
       headerText = 'Join Warbler!';
       buttonText = 'Sign Up';
       usernameInput = (
         <Form.Input
+          autoComplete="username"
+          error={errors.username.error ? errors.username.message : false}
           label="Username"
           name="username"
-          type="text"
-          placeholder="Enter your original username"
-          value={username}
-          autoComplete="username"
           onChange={this.handleChange}
+          placeholder="Enter your original username"
+          type="text"
+          value={username}
         />
       );
       profileImageUrlInput = (
         <Form.Input
           label="Profile Image Url"
           name="profileImageUrl"
-          type="url"
-          placeholder="Enter the url to your profile image"
-          value={profileImageUrl}
           onChange={this.handleChange}
+          placeholder="Enter the url to your profile image"
+          type="url"
+          value={profileImageUrl}
         />
       );
-    } else {
-      headerText = 'Welcome back!';
-      buttonText = 'Log In';
-      usernameInput = null;
-      profileImageUrlInput = null;
+    }
+    if (error.message) {
+      errorMessage = (
+        <Message
+          error
+          header={action === 'signup' ? 'Failed to sign up' : 'Failed to sign in'}
+          content={error.message}
+        />
+      );
     }
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit} error={!!error.message}>
         <Header as="h2">{headerText}</Header>
         {usernameInput}
         <Form.Input
+          autoComplete="email"
+          error={errors.email.error ? errors.email.message : false}
           label="Email"
           name="email"
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          autoComplete="email"
           onChange={this.handleChange}
+          placeholder="Enter your email"
+          type="text"
+          value={email}
         />
         <Form.Input
+          autoComplete="new-password"
+          error={errors.password.error ? errors.password.message : false}
           label="Password"
           name="password"
-          type="password"
-          placeholder="Enter your super secret password"
-          value={password}
-          autoComplete="new-password"
           onChange={this.handleChange}
+          placeholder="Enter your super secret password"
+          type="password"
+          value={password}
         />
         {profileImageUrlInput}
+        {errorMessage}
         <Button primary type="submit">
           {buttonText}
         </Button>
@@ -97,6 +136,9 @@ class AuthForm extends Component {
 
 AuthForm.propTypes = {
   action: PropTypes.string.isRequired,
+  error: PropTypes.shape({
+    message: PropTypes.string,
+  }).isRequired,
   onAuth: PropTypes.func.isRequired,
 };
 
