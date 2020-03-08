@@ -48,6 +48,10 @@ const Main = ({
 
 Main.propTypes = {
   authUser: PropTypes.func.isRequired,
+  error: PropTypes.shape({
+    message: PropTypes.string,
+  }).isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
   removeError: PropTypes.func.isRequired,
   user: PropTypes.shape({
     isAuthenticated: PropTypes.bool.isRequired,
@@ -58,10 +62,6 @@ Main.propTypes = {
       token: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  error: PropTypes.shape({
-    message: PropTypes.string,
-  }).isRequired,
-  history: ReactRouterPropTypes.history.isRequired,
 };
 
 const mapStateToProps = (state) => ({

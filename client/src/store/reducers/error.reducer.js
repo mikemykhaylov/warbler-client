@@ -5,7 +5,7 @@ export default (state = { message: '' }, action) => {
     case ADD_ERROR:
       return { ...state, message: action.error };
     case REMOVE_ERROR:
-      return { ...state, message: null };
+      return { ...state, message: '' };
     default:
       return { ...state };
   }

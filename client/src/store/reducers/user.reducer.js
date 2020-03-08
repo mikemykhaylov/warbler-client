@@ -15,7 +15,7 @@ export default (state = DEFAULT_STATE, action) => {
     case SET_CURRENT_USER:
       return {
         isAuthenticated: Object.keys(action.user).length > 0,
-        user: action.user,
+        user: Object.keys(action.user).length > 0 ? action.user : DEFAULT_STATE.user,
       };
     default:
       return { ...state };
