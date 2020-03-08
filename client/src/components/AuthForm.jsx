@@ -10,7 +10,8 @@ class AuthForm extends Component {
     email: '',
     password: '',
     profileImageUrl: '',
-    errors: {
+    validationErrors: {
+      errorsPresent: false,
       username: {
         error: false,
         message: '',
@@ -62,18 +63,18 @@ class AuthForm extends Component {
     const errorsState = validateState(fieldsToValidate);
     if (!errorsState.errorsPresent) {
       const successfulAuth = await authUser(action, this.state);
-      this.setState({ errors: this.initialState.errors });
+      this.setState({ validationErrors: this.initialState.validationErrors });
       if (successfulAuth) {
         history.push('/');
       }
     } else {
-      this.setState({ errors: errorsState });
+      this.setState({ validationErrors: errorsState });
     }
   };
 
   render() {
-    const { email, username, password, profileImageUrl, errors } = this.state;
-    const { action, error } = this.props;
+    const { email, username, password, profileImageUrl, validationErrors } = this.state;
+    const { action, dbErrors } = this.props;
     let headerText = 'Welcome back!';
     let buttonText = 'Log In';
     let usernameInput = null;
@@ -85,7 +86,7 @@ class AuthForm extends Component {
       usernameInput = (
         <Form.Input
           autoComplete="username"
-          error={errors.username.error ? errors.username.message : false}
+          error={validationErrors.username.error ? validationErrors.username.message : false}
           label="Username"
           name="username"
           onChange={this.handleChange}
@@ -105,22 +106,31 @@ class AuthForm extends Component {
         />
       );
     }
-    if (error.message) {
+    if (dbErrors.message) {
       errorMessage = (
-        <Message
-          error
-          header={action === 'signup' ? 'Failed to sign up' : 'Failed to sign in'}
-          content={error.message}
-        />
+        <Message error>
+          <Message.Header>
+            {action === 'signup' ? 'Failed to sign up' : 'Failed to sign in'}
+          </Message.Header>
+          {dbErrors.message.split('\n').length > 1 ? (
+            <Message.List>
+              {dbErrors.message.split('\n').map((error) => (
+                <Message.Item key={error}>{error}</Message.Item>
+              ))}
+            </Message.List>
+          ) : (
+            <p>{dbErrors.message}</p>
+          )}
+        </Message>
       );
     }
     return (
-      <Form onSubmit={this.handleSubmit} error={!!error.message}>
+      <Form onSubmit={this.handleSubmit} error={!!dbErrors.message}>
         <Header as="h2">{headerText}</Header>
         {usernameInput}
         <Form.Input
           autoComplete="email"
-          error={errors.email.error ? errors.email.message : false}
+          error={validationErrors.email.error ? validationErrors.email.message : false}
           label="Email"
           name="email"
           onChange={this.handleChange}
@@ -130,7 +140,7 @@ class AuthForm extends Component {
         />
         <Form.Input
           autoComplete="new-password"
-          error={errors.password.error ? errors.password.message : false}
+          error={validationErrors.password.error ? validationErrors.password.message : false}
           label="Password"
           name="password"
           onChange={this.handleChange}
@@ -150,7 +160,7 @@ class AuthForm extends Component {
 
 AuthForm.propTypes = {
   action: PropTypes.string.isRequired,
-  error: PropTypes.shape({
+  dbErrors: PropTypes.shape({
     message: PropTypes.string,
   }).isRequired,
   authUser: PropTypes.func.isRequired,
