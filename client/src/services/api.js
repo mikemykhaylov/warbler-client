@@ -11,6 +11,5 @@ export default async function callApi(method, path, data) {
   } catch (err) {
     response = err.error.message;
   }
-  console.log(response);
   return response;
 }
