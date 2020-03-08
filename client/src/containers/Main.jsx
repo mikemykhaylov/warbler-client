@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
@@ -14,6 +15,7 @@ const Main = ({
   authUser: authUserMapped,
   removeError: removeErrorMapped,
   error,
+  history,
 }) => {
   return (
     <Container className="main__container">
@@ -23,18 +25,20 @@ const Main = ({
         </Route>
         <Route path="/signin">
           <AuthForm
-            onAuth={authUserMapped}
+            authUser={authUserMapped}
             action="signin"
             error={error}
             removeError={removeErrorMapped}
+            history={history}
           />
         </Route>
         <Route path="/signup">
           <AuthForm
-            onAuth={authUserMapped}
+            authUser={authUserMapped}
             action="signup"
             error={error}
             removeError={removeErrorMapped}
+            history={history}
           />
         </Route>
       </Switch>
@@ -57,6 +61,7 @@ Main.propTypes = {
   error: PropTypes.shape({
     message: PropTypes.string,
   }).isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 const mapStateToProps = (state) => ({
