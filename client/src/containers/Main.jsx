@@ -14,7 +14,7 @@ const Main = ({
   user,
   authUser: authUserMapped,
   removeError: removeErrorMapped,
-  error,
+  dbErrors,
   history,
 }) => {
   return (
@@ -27,7 +27,7 @@ const Main = ({
           <AuthForm
             authUser={authUserMapped}
             action="signin"
-            error={error}
+            dbErrors={dbErrors}
             removeError={removeErrorMapped}
             history={history}
           />
@@ -36,7 +36,7 @@ const Main = ({
           <AuthForm
             authUser={authUserMapped}
             action="signup"
-            error={error}
+            dbErrors={dbErrors}
             removeError={removeErrorMapped}
             history={history}
           />
@@ -48,7 +48,7 @@ const Main = ({
 
 Main.propTypes = {
   authUser: PropTypes.func.isRequired,
-  error: PropTypes.shape({
+  dbErrors: PropTypes.shape({
     message: PropTypes.string,
   }).isRequired,
   history: ReactRouterPropTypes.history.isRequired,
@@ -66,7 +66,7 @@ Main.propTypes = {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  error: state.error,
+  dbErrors: state.dbErrors,
 });
 
 const mapDispatchToProps = {
