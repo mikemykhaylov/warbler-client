@@ -15,6 +15,5 @@ export default function validate(state) {
     }
     errorState[key] = errorObj;
   });
-  console.log(errorState)
   return errorState;
 }
