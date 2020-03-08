@@ -1,6 +1,6 @@
 import callApi from '../../services/api';
 import { SET_CURRENT_USER } from '../actionTypes';
-import { addError, removeError } from './errorActions';
+import { addError, removeError } from './error.actions';
 
 export function setCurrentUser(user) {
   return {
