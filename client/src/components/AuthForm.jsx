@@ -34,10 +34,14 @@ class AuthForm extends Component {
 
   componentDidMount() {
     const { removeError, history } = this.props;
-    history.listen(() => {
+    this.listener = history.listen(() => {
       this.setState(this.initialState);
       removeError();
     });
+  }
+
+  componentWillUnmount() {
+    this.listener();
   }
 
   handleChange = (e) => {
@@ -49,7 +53,7 @@ class AuthForm extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { action, authUser } = this.props;
+    const { action, authUser, history } = this.props;
     const { username, email, password } = this.state;
     let fieldsToValidate = { email, password };
     if (action === 'signup') {
@@ -57,8 +61,11 @@ class AuthForm extends Component {
     }
     const errorsState = validateState(fieldsToValidate);
     if (!errorsState.errorsPresent) {
-      await authUser(action, this.state);
+      const successfulAuth = await authUser(action, this.state);
       this.setState({ errors: this.initialState.errors });
+      if (successfulAuth) {
+        history.push('/');
+      }
     } else {
       this.setState({ errors: errorsState });
     }

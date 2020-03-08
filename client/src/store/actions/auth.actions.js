@@ -14,11 +14,19 @@ export function authUser(type, userData) {
     const response = await callApi('post', `api/auth/${type}`, userData);
     if (response.error) {
       dispatch(addError(response.error.message));
-    } else {
-      const { token, ...user } = response;
-      localStorage.setItem('jwtToken', token);
-      dispatch(setCurrentUser({ ...user, token }));
-      dispatch(removeError());
+      return false;
     }
+    const { token, ...user } = response;
+    localStorage.setItem('jwtToken', token);
+    await dispatch(setCurrentUser({ ...user, token }));
+    await dispatch(removeError());
+    return true;
   };
+}
+
+export function logoutUser() {
+  return async (dispatch) => {
+    localStorage.removeItem('jwtToken');
+    await dispatch(setCurrentUser({}))
+  }
 }
