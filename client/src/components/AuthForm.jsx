@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Button, Form, Header, Message } from 'semantic-ui-react';
 import validateState from '../services/validation';
 
@@ -22,19 +23,21 @@ class AuthForm extends Component {
         error: false,
         message: '',
       },
-      profileImageUrl: {
-        error: false,
-        message: '',
-      },
     },
   };
 
-
-  // TODO Make server-side errors disappear on action change
   constructor(props) {
     super(props);
 
     this.state = this.initialState;
+  }
+
+  componentDidMount() {
+    const { removeError, history } = this.props;
+    history.listen(() => {
+      this.setState(this.initialState);
+      removeError();
+    });
   }
 
   handleChange = (e) => {
@@ -46,11 +49,15 @@ class AuthForm extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { action, onAuth } = this.props;
+    const { action, authUser } = this.props;
     const { username, email, password } = this.state;
-    const errorsState = validateState({ username, email, password });
+    let fieldsToValidate = { email, password };
+    if (action === 'signup') {
+      fieldsToValidate = { ...fieldsToValidate, username };
+    }
+    const errorsState = validateState(fieldsToValidate);
     if (!errorsState.errorsPresent) {
-      await onAuth(action, this.state);
+      await authUser(action, this.state);
       this.setState({ errors: this.initialState.errors });
     } else {
       this.setState({ errors: errorsState });
@@ -139,7 +146,9 @@ AuthForm.propTypes = {
   error: PropTypes.shape({
     message: PropTypes.string,
   }).isRequired,
-  onAuth: PropTypes.func.isRequired,
+  authUser: PropTypes.func.isRequired,
+  removeError: PropTypes.func.isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 export default AuthForm;
