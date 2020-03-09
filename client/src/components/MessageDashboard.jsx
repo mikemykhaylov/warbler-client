@@ -4,7 +4,7 @@ import { Grid, Card } from 'semantic-ui-react';
 import MessageList from '../containers/MessageList';
 import defaultProfileImage from '../images/defaultProfileImage.png';
 
-const MessageTimeline = ({ username, profileImageUrl }) => {
+const MessageDashboard = ({ username, profileImageUrl }) => {
   return (
     <Grid>
       <Grid.Column width={5}>
@@ -17,9 +17,9 @@ const MessageTimeline = ({ username, profileImageUrl }) => {
   );
 };
 
-MessageTimeline.propTypes = {
+MessageDashboard.propTypes = {
   username: PropTypes.string.isRequired,
   profileImageUrl: PropTypes.string.isRequired,
 };
 
-export default MessageTimeline;
+export default MessageDashboard;
