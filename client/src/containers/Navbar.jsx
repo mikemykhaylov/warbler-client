@@ -21,13 +21,13 @@ const Navbar = ({ user, logoutUserMapped }) => {
         </Menu.Item>
         {!user.isAuthenticated ? (
           <Menu.Menu position="right">
-            <Menu.Item as={Link} to="/signin" content="Login" key="login"></Menu.Item>
-            <Menu.Item as={Link} to="/signup" content="Register" key="register"></Menu.Item>
+            <Menu.Item as={Link} to="/signin" content="Login" key="login" />
+            <Menu.Item as={Link} to="/signup" content="Register" key="register" />
           </Menu.Menu>
         ) : (
           <Menu.Menu position="right">
-            <Menu.Item as={Link} to="/message/new" content="New Post" key="newPost"></Menu.Item>
-            <Menu.Item content="Log Out" key="logout" onClick={logoutUserMapped}></Menu.Item>
+            <Menu.Item as={Link} to="/message/new" content="New Post" key="newPost" />
+            <Menu.Item content="Log Out" key="logout" onClick={logoutUserMapped} />
           </Menu.Menu>
         )}
       </Container>
