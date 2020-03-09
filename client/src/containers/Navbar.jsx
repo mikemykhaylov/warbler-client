@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Menu, Container, Header } from 'semantic-ui-react';
 import { logoutUser } from '../store/actions/auth.actions';
 
 const Navbar = ({ user, logoutUserMapped }) => {
+  const history = useHistory();
   return (
     <Menu fixed="top">
       <Container>
@@ -27,7 +28,14 @@ const Navbar = ({ user, logoutUserMapped }) => {
         ) : (
           <Menu.Menu position="right">
             <Menu.Item as={Link} to="/message/new" content="New Post" key="newPost" />
-            <Menu.Item content="Log Out" key="logout" onClick={logoutUserMapped} />
+            <Menu.Item
+              content="Log Out"
+              key="logout"
+              onClick={() => {
+                logoutUserMapped();
+                history.push('/');
+              }}
+            />
           </Menu.Menu>
         )}
       </Container>
