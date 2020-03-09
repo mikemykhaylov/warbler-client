@@ -4,11 +4,11 @@ export default function validate(state) {
     const input = state[key];
     const errorObj = {
       error: true,
-      message: ''
-    }
+      message: '',
+    };
     if (!input) {
       errorObj.error = true;
-      errorObj.message = `Please enter ${key}`
+      errorObj.message = `Please enter ${key}`;
       errorState.errorsPresent = true;
     } else {
       errorObj.error = false;
