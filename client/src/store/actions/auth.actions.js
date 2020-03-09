@@ -11,9 +11,9 @@ export function setCurrentUser(user) {
 
 export function authUser(type, userData) {
   return async (dispatch) => {
-    const response = await callApi('post', `api/auth/${type}`, userData);
+    const response = await callApi('post', `api/auth/${type}`, userData, null);
     if (response.error) {
-      dispatch(addError(response.error.message));
+      await dispatch(addError(response.error.message));
       return false;
     }
     const { token, ...user } = response;
@@ -27,6 +27,6 @@ export function authUser(type, userData) {
 export function logoutUser() {
   return async (dispatch) => {
     localStorage.removeItem('jwtToken');
-    await dispatch(setCurrentUser({}))
-  }
+    await dispatch(setCurrentUser({}));
+  };
 }

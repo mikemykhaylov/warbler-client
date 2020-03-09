@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Header, Button } from 'semantic-ui-react';
+import MessageTimeline from './MessageTimeline';
 import '../scss/Homepage.scss';
 
 const Homepage = ({ user }) => {
@@ -21,11 +22,7 @@ const Homepage = ({ user }) => {
     );
   }
   return (
-    <div className="hero">
-      <Header as="h1" className="hero__title">
-        You made it!
-      </Header>
-    </div>
+    <MessageTimeline profileImageUrl={user.user.profileImageUrl} username={user.user.username} />
   );
 };
 
