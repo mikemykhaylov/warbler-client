@@ -8,6 +8,7 @@ import { authUser } from '../store/actions/auth.actions';
 import { removeError } from '../store/actions/error.actions';
 import Homepage from '../components/Homepage';
 import AuthForm from '../components/AuthForm';
+import MessageForm from '../components/MessageForm';
 import '../scss/Main.scss';
 
 const Main = ({
@@ -40,6 +41,9 @@ const Main = ({
             removeError={removeErrorMapped}
             history={history}
           />
+        </Route>
+        <Route path="/message/new">
+          <MessageForm />
         </Route>
       </Switch>
     </Container>
