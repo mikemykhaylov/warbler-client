@@ -4,6 +4,7 @@ export default async function callApi(method, path, data, token) {
   const kyOptions = {
     prefixUrl: 'http://localhost:3000',
     throwHttpErrors: false,
+    timeout: 2000
   };
   if (data && Object.keys(data).length > 0) {
     kyOptions.json = data;
