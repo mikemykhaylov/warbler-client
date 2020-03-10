@@ -62,7 +62,6 @@ export function deleteMessage(authorId, messageId, token) {
       null,
       token,
     );
-    console.log(response)
     if (response.error) {
       await dispatch(addError(response.error.message));
       return false;
