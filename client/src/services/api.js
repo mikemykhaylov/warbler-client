@@ -2,7 +2,6 @@ import ky from 'ky';
 
 export default async function callApi(method, path, data, token) {
   const kyOptions = {
-    prefixUrl: 'http://localhost:3000',
     throwHttpErrors: false,
     timeout: 2000
   };
