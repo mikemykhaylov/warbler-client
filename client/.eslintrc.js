@@ -4,28 +4,23 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-    'prettier'
-  ],
+  extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
-  parser: "babel-eslint",
+  parser: 'babel-eslint',
   parserOptions: {
-    sourceType: "module",
+    sourceType: 'module',
     allowImportExportEverywhere: false,
     ecmaFeatures: {
       globalReturn: false,
     },
   },
-  plugins: [
-    'react',
-  ],
+  plugins: ['react'],
   rules: {
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
-    "react/prop-types": [2, { ignore: ['children'] }],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'react/prop-types': [2, { ignore: ['children'] }],
+    'no-underscore-dangle': ['error', { allow: ['__REDUX_DEVTOOLS_EXTENSION__'] }],
   },
 };
