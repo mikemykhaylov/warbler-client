@@ -3,7 +3,7 @@ import ky from 'ky';
 export default async function callApi(method, path, data, token) {
   const kyOptions = {
     throwHttpErrors: false,
-    timeout: 2000
+    timeout: 2000,
   };
   if (data && Object.keys(data).length > 0) {
     kyOptions.json = data;
