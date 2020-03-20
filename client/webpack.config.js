@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
@@ -47,7 +48,8 @@ module.exports = {
       template: './public/index.html', // source html
     }),
     new MiniCssExtractPlugin(),
-    new FaviconsWebpackPlugin('./public/logo.svg')
+    new FaviconsWebpackPlugin('./public/logo.svg'),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
