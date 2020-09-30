@@ -6,7 +6,8 @@
     "dev": "node_modules/.bin/webpack-dev-server --mode development --hot",
     "build": "node_modules/.bin/webpack --config webpack.prod.js --mode production",
     "start": "node_modules/.bin/http-server ./dist",
-    "analyze": "source-map-explorer ./dist/index_bundle.js"
+    "prettier": "prettier --config ./.prettierrc --write \"./src/**/*.js?(x)\"",
+    "eslint": "eslint -c ./.eslintrc.js \"./src/**/*.js?(x)\""
   },
   "license": "MIT",
   "dependencies": {

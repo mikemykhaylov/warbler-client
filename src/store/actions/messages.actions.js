@@ -18,7 +18,12 @@ export function removeMessage(messageId) {
 
 export function fetchMessages(token) {
   return async (dispatch) => {
-    const response = await callApi('get', 'https://warbler-server-michael.herokuapp.com/api/messages', {}, token);
+    const response = await callApi(
+      'get',
+      'https://warbler-server-michael.herokuapp.com/api/messages',
+      {},
+      token,
+    );
     if (response.error) {
       await dispatch(addError(response.error.message));
     } else {
@@ -44,7 +49,12 @@ export function fetchMessages(token) {
 
 export function postMessage(text, authorId, token) {
   return async (dispatch) => {
-    const response = await callApi('post', `https://warbler-server-michael.herokuapp.com/api/users/${authorId}/messages`, { text }, token);
+    const response = await callApi(
+      'post',
+      `https://warbler-server-michael.herokuapp.com/api/users/${authorId}/messages`,
+      { text },
+      token,
+    );
     if (response.error) {
       await dispatch(addError(response.error.message));
       return false;
